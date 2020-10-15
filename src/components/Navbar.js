@@ -1,5 +1,6 @@
 import React from "react";
 import Logo from "../assets/images/verify-logo.svg"
+import VerificationContainer from "../pages/VerificationContainer"
 
 class Navbar extends React.Component {
   render() {
@@ -18,15 +19,7 @@ class Navbar extends React.Component {
             <div id="navbarBasicExample" className="navbar-menu">
               <div className="navbar-end">
                 <div className="navbar-item">
-                  <div className="buttons">
-                    <i className="fas fa-shield-check has-text-primary fa-lg"></i>
-                    <div className="field">
-                      <div className="control">
-                        <input className="input" type="text" placeholder="Número de auditoría" />
-                      </div>
-                    </div>
-                    <a href="/" type="submit" className="button is-primary">Verificar</a>
-                  </div>
+                  <VerificationContainer />
                 </div>
               </div>
             </div>
