@@ -1,0 +1,87 @@
+body {
+  padding-top: 3.25rem;
+  color: rgb(74, 74, 74);
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.mx-auto {
+  margin: 0 auto;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.container {
+  &.container-main {
+    margin-top: 5rem;
+  }
+}
+.options-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.field {
+  margin-bottom: 0 !important;
+}
+
+.buttons .button {
+  margin-bottom: 0rem !important;
+}
+.buttons {
+  .field {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+}
+.subtitle {
+  margin-bottom: 2rem !important;
+}
+.help {
+  display: none !important;
+}
+.footer {
+  background-color: #fff !important;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  overflow: hidden;
+}
+.logo-footer {
+  display: block;
+  margin-bottom: 0.3rem;
+}
+.navbar {
+  height: 64px;
+}
+.modal-card-body {
+  border-radius: 4px;
+}
+@media screen and (max-width: 480px) {
+  .container {
+    &.container-main {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+  .options-container {
+    display: block;
+    .field {
+      margin-bottom: 1rem !important;
+    }
+    .button {
+      float: right;
+    }
+  }
+  .footer {
+    padding-bottom: 3rem;
+  }
+}
+
+@media screen and (max-height: 768px) {
+  .modal-card {
+    margin: 0 auto;
+    width: 90%;
+  }
+}
