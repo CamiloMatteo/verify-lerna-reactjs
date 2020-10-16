@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../assets/images/verify-logo.svg"
-import VerificationContainer from "../pages/VerificationContainer"
+import VerificationContainer from "../pages/AuditVerification"
 
 class Navbar extends React.Component {
   render() {

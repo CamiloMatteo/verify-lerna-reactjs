@@ -2,12 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 const Modal = (props) => {
-  console.log(props)
   if (props.isModalOpen) {
-    console.log("ENTRA!")
     return ReactDOM.createPortal(
       <div className="modal is-active">
-        <div className="modal-background" />
+        <div className="modal-background" onClick={props.isClose}/>
         <div className="modal-content">
           <div className="modal-card">
             <section className="modal-card-body has-text-centered">
@@ -15,7 +13,7 @@ const Modal = (props) => {
             </section>
           </div>
         </div>
-        <button className="modal-close is-large" aria-label="close"></button>
+        <button className="modal-close is-large" aria-label="close" onClick={props.isClose}></button>
       </div>,
       document.getElementById("modal")
     );

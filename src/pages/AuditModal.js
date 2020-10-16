@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "../components/Modal";
 
 const AuditModal = (props) => (
-  <Modal isModalOpen={props.isOpen} onOpen={props.onOpenModal} onClose={props.handleCloseModal}>
+  <Modal isModalOpen={props.isOpen} isClose={props.onCloseModal}>
     <i className="fas fa-shield-check has-text-primary fa-4x mb-2"></i>
     <br></br>
     <div className="content">
@@ -10,7 +10,7 @@ const AuditModal = (props) => (
       <p>Lorem ipsum</p>
       <br></br>
     
-      <button onClick={props.handleCloseModal} className="button is-primary">Entendido</button>
+      <button onClick={props.onCloseModal} className="button is-primary">Entendido</button>
     </div>
   </Modal>
 );

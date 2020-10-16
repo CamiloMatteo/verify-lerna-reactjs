@@ -1,9 +1,9 @@
 import React from "react";
-import PageLoading from "../components/pageLoading"
 import PageError from "../components/PageError";
 import AuditModal from "./AuditModal"
+import Loader from "../components/Loader"
 
-class VerificationContainer extends React.Component {
+class AuditVerification extends React.Component {
   state = {
     loading: false,
     error: null,
@@ -24,23 +24,17 @@ class VerificationContainer extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.form)
-    // this.setState({ loading: true, error: null });
-    // try {
-    //   // LLAMADA A LA API
-    //   console.log(this.state.form)
-    //   this.setState({ loading: false });
-    //   // RETORNAR DATA
-    // } catch (error) {
-    //   this.setState({ loading: false, error: error })
-    // };
-    
-    if (this.state.form.audit.length > 0) {
-      this.setState({ modalIsOpen: true });
-      console.log("GO!")
-    } else {
-      alert("EMPTY!");
-    }
+    this.setState({ loading: true, error: null });
+
+    setTimeout(() => {
+      if (this.state.form.audit.length > 0) {
+        this.handleOpenModal();
+        this.setState({ loading: false, error: null });
+      } else {
+        alert("EMPTY!");
+        this.setState({ loading: false, error: null })
+      }
+    }, 5000);
   }
 
   handleOpenModal = (e) => {
@@ -53,7 +47,7 @@ class VerificationContainer extends React.Component {
   
   render() {
     if (this.state.loading) {
-      return <PageLoading />;
+      return <Loader />;
     }
 
     if (this.state.error) {
@@ -66,16 +60,15 @@ class VerificationContainer extends React.Component {
           <i className="fas fa-shield-check has-text-primary fa-lg"></i>
           <div className="field">
             <div className="control">
-              <input className="input" type="text" placeholder="Número de auditoría" name="audit" onChange={this.handleChange} value={this.state.form.audit} />
+              <input className="input" type="text" placeholder="Número de auditoría" name="audit" onChange={this.handleChange} value={this.state.form.audit} required={true} />
             </div>
           </div>
           <button type="submit" className="button is-primary" onSubmit={this.handleSubmit}>Verificar</button>
         </form>
-        { (this.state.modalIsOpen) && (<AuditModal isOpen={this.state.modalIsOpen} onOpenModal={this.handleOpenModal} onCloseModal={this.handleCloseModal} />) }
+        { (this.state.modalIsOpen) && (<AuditModal isOpen={this.state.modalIsOpen} onCloseModal={this.handleCloseModal} />) }
       </React.Fragment>
-
     )
   }
 }
 
-export default VerificationContainer
+export default AuditVerification;
