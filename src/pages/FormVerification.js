@@ -11,8 +11,10 @@ class FormVerification extends React.Component {
               <div className="select is-fullwidth is-empty">
                 <select>
                   <option>Seleccionar</option>
-                  <option>1</option>
-                  <option>2</option>
+                  <option>Base de Datos</option>
+                  <option>Cédula nueva</option>
+                  <option>Cédula antigua</option>
+                  <option>Cédulas y Base de datos</option>
                 </select>
               </div>
             </div>

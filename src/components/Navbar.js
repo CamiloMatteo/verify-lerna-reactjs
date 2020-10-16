@@ -1,33 +1,35 @@
 import React from "react";
-import Logo from "../assets/images/verify-logo.svg"
-import VerificationContainer from "../pages/AuditVerification"
+import Logo from "../assets/images/verify-logo.svg";
+import AuditVerification from "../pages/AuditVerification";
+import { Link } from "react-router-dom";
 
-class Navbar extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <nav className="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
-          <div className="container">
-            <div className="navbar-brand">
-              <a href="/" className="navbar-item"><img src={Logo} alt="Autentia Verify" /></a>
-              <a href="/" role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-              </a>
-            </div>
-            <div id="navbarBasicExample" className="navbar-menu">
-              <div className="navbar-end">
-                <div className="navbar-item">
-                  <VerificationContainer />
-                </div>
+const Navbar = () => {
+  const [isActive, setActive] = React.useState(false);
+  
+  return (
+    <React.Fragment>
+      <nav className="navbar is-fixed-top has-shadow" role="navigation" aria-label="main navigation">
+        <div className="container">
+          <div className="navbar-brand">
+            <Link to="/" className="navbar-item"><img src={Logo} alt="Autentia Verify" /></Link>
+            <button onClick={() => setActive(!isActive)} className={`navbar-burger burger ${isActive ? "is-active" : ""}`} aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          
+          <div id="navbarBasicExample" className={`navbar-menu ${isActive ? "is-active" : ""}`}>
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <AuditVerification />
               </div>
             </div>
           </div>
-        </nav>
-      </React.Fragment>
-    )
-  }
+        </div>
+      </nav>
+    </React.Fragment>
+  )
 }
 
 export default Navbar;

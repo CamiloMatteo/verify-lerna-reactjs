@@ -34,7 +34,7 @@ class AuditVerification extends React.Component {
         alert("EMPTY!");
         this.setState({ loading: false, error: null })
       }
-    }, 5000);
+    }, 1500);
   }
 
   handleOpenModal = (e) => {
@@ -47,7 +47,7 @@ class AuditVerification extends React.Component {
   
   render() {
     if (this.state.loading) {
-      return <Loader />;
+      return <div className="content has-text-centered"><Loader /></div>;
     }
 
     if (this.state.error) {
@@ -56,14 +56,16 @@ class AuditVerification extends React.Component {
 
     return (
       <React.Fragment>
-        <form className="buttons" onSubmit={this.handleSubmit}>
-          <i className="fas fa-shield-check has-text-primary fa-lg"></i>
-          <div className="field">
+        <form className="buttons is-centered" onSubmit={this.handleSubmit}>
+          <i className="fas fa-shield-check has-text-primary fa-lg is-hidden-mobile"></i>
+          <div className="field has-addons">
             <div className="control">
               <input className="input" type="text" placeholder="Número de auditoría" name="audit" onChange={this.handleChange} value={this.state.form.audit} required={true} />
             </div>
+            <div className="control">
+              <button type="submit" className="button is-primary" onSubmit={this.handleSubmit}>Verificar</button>
+            </div>
           </div>
-          <button type="submit" className="button is-primary" onSubmit={this.handleSubmit}>Verificar</button>
         </form>
         { (this.state.modalIsOpen) && (<AuditModal isOpen={this.state.modalIsOpen} onCloseModal={this.handleCloseModal} />) }
       </React.Fragment>
