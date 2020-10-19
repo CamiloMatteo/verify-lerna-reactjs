@@ -1,41 +1,93 @@
 import React from "react";
 
 class FormVerification extends React.Component {
+  state = {
+    loading: false,
+    error: null,
+    options: ["Base de Datos", "Cédula Nueva", "Cédula Antigua", "Cédulas y Base de Datos"],
+    form: {
+      selectedOption: "Base de Datos",
+      dni: "",
+    },
+  }
+
+  handleSelectOption = (e) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        selectedOption: e.target.value
+      }
+    })
+  }
+
+  handleChangeInput = (e) => {
+    this.setState({
+      form: {
+        ...this.state.form,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  handleForm = (e) => {
+    e.preventDefault();
+    const { selectedOption } = this.state.form;
+    
+    if (selectedOption.length > 0 ) {
+      console.log("entra")
+    } else {
+      alert("Falta type de verificacion");
+    }
+  };
+
   render() {
+    const { selectedOption } = this.state.form;
+    console.log(selectedOption);
     return (
-      <form className="options-container">
+      <form className="options-container" onSubmit={this.handleForm}>
         <div className="column is-4">
           <div className="field">
             <label className="label">Seleccionar</label>
             <div className="control is-block">
-              <div className="select is-fullwidth is-empty">
-                <select>
-                  <option>Seleccionar</option>
-                  <option>Base de Datos</option>
-                  <option>Cédula nueva</option>
-                  <option>Cédula antigua</option>
-                  <option>Cédulas y Base de datos</option>
-                </select>
-              </div>
+              <SelectList options={this.state.options} changeSelectOption={this.handleSelectOption} value={selectedOption} />
             </div>
           </div>
         </div>
-        <div className="column is-4">
-          <div className="field">
-            <label className="label">RUT</label>
-            <div className="control is-clearfix">
-              <input className="input" type="text" placeholder="Ingrese su rut" />
-            </div>
-          </div>
-        </div>
-        <div className="column is-4">
-          <a href="/" className="button is-primary modal-button" data-target="#myModal" aria-haspopup="true">
+        { selectedOption === "Base de Datos" && <InputDni changeInput={this.handleChangeInput} dni={this.state.form.dni} />}
+        <div className={`column ${selectedOption === "Base de Datos" ? "is-4" : "is-8"}`}>
+          <button onSubmit={this.handleForm} type="submit" className="button is-primary">
             Aceptar
-          </a>
+          </button>
         </div>
       </form>
     )
   }
 }
+
+const SelectList = (props) => {
+  return (
+    <div className="select is-fullwidth is-empty">
+      <select onChange={props.changeSelectOption} value={props.value}>
+        {props.options.map(name => 
+          <option key={name}>{name}</option>
+        )}
+      </select>
+    </div>
+  )
+};
+
+const InputDni = (props) => {
+  return (
+    <div className="column is-4">
+      <div className="field">
+        <label className="label">RUT</label>
+        <div className="control is-clearfix">
+          <input className="input" type="text" placeholder="Ingrese su rut" name="dni" onChange={props.changeInput} value={props.dni} required={true} />
+        </div>
+      </div>
+    </div>
+  )
+}
+    
 
 export default FormVerification;
