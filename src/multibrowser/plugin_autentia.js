@@ -40,23 +40,23 @@ oZmeq9HECQEuV3Kg0iq0e1wQAJH7fIZ7y9QXeopudP6eNz/uFwXE5Q== \
 /**
  * bind function substitute
  */
-if (! Function.prototype.bind) {
-    Function.prototype.bind = function(oThis) {
+if (!Function.prototype.bind) {
+    Function.prototype.bind = function (oThis) {
         if (typeof this !== 'function') {
             // closest thing possible to the ECMAScript 5
             // internal IsCallable function
             throw new TypeError('Function.prototype.bind - what is trying to be bound is not callable');
         }
 
-        var aArgs   = Array.prototype.slice.call(arguments, 1),
-        fToBind = this,
-        fNOP    = function() {},
-        fBound  = function() {
-            return fToBind.apply(this instanceof fNOP && oThis
-            ? this
-            : oThis,
-            aArgs.concat(Array.prototype.slice.call(arguments)));
-        };
+        var aArgs = Array.prototype.slice.call(arguments, 1),
+            fToBind = this,
+            fNOP = function () { },
+            fBound = function () {
+                return fToBind.apply(this instanceof fNOP && oThis
+                    ? this
+                    : oThis,
+                    aArgs.concat(Array.prototype.slice.call(arguments)));
+            };
 
         fNOP.prototype = this.prototype;
         fBound.prototype = new fNOP();
@@ -74,22 +74,22 @@ if (! Function.prototype.bind) {
  */
 if (window.console === undefined) {
     window.console = {
-        log: function() {},
-        error: function() {},
-        debug: function() {}
+        log: function () { },
+        error: function () { },
+        debug: function () { }
     }
 }
 
 if (console.log === undefined) {
-    console.log = function() {};
+    console.log = function () { };
 }
 
 if (console.error === undefined) {
-    console.error = function() {};
+    console.error = function () { };
 }
 
 if (console.debug === undefined) {
-    console.debug = function() {};
+    console.debug = function () { };
 }
 
 /**
@@ -117,15 +117,15 @@ function _trim(s) {
     return s.replace(/^[ \t\r\n]*/, '').replace(/[ \t\r\n]*$/, '');
 }
 
-function done(){
+function done() {
     //on submit function
     //console.log('Titulo ventana obtenido desde JQuery '+$('title').html());
 }
 
-function load(){ //load jQuery if it isn't already
-    window.onload = function() {
+function load() { //load jQuery if it isn't already
+    window.onload = function () {
         if (window.jQuery === undefined) {
-            var protocol = 'https:' == location.protocol ? 'https': 'http';
+            var protocol = 'https:' == location.protocol ? 'https' : 'http';
             var script = document.createElement('script');
             script.onload = done;
             script.src = protocol + '://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js';
@@ -143,8 +143,8 @@ function load(){ //load jQuery if it isn't already
 }
 
 if (window.readyState) { //older microsoft browsers
-    window.onreadystatechange = function(){
-        if(this.readyState == 'complete' || this.readyState == 'loaded'){
+    window.onreadystatechange = function () {
+        if (this.readyState == 'complete' || this.readyState == 'loaded') {
             load();
         }
     }
@@ -155,10 +155,10 @@ if (window.readyState) { //older microsoft browsers
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
     }
     return "";
 }
@@ -166,10 +166,10 @@ function getCookie(cname) {
 function httpRequest() {
     var x;
     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-        x=new XMLHttpRequest();
+        x = new XMLHttpRequest();
         console.debug('LOAD:: XMLHttpRequest()');
     } else {// code for IE6, IE5
-        x=new ActiveXObject("Microsoft.XMLHTTP");
+        x = new ActiveXObject("Microsoft.XMLHTTP");
         console.debug('LOAD:: ActiveXObject("Microsoft.XMLHTTP")');
     }
     return x;
@@ -182,100 +182,79 @@ function FirmaInvalidaMB(resp, encodedResp) {
     var LfirmaValida = Lx509.subjectPublicKeyRSA.verifyString(LtmpSignature, resp.signature);
     var LResul = false;
     //Validacion version Multibrowser 2.0.9
-    if (! LfirmaValida) {
+    if (!LfirmaValida) {
         //Validacion version Multibrowser 2.0.8
         LtmpSignature = encodedResp.replace(/"signature":"[^"]+"/, '"signature":""');
         LtmpSignature = LtmpSignature.replace(/"token":"[^"]+"/, '"token":""');
         LfirmaValida = Lx509.subjectPublicKeyRSA.verifyString(LtmpSignature, resp.signature);
-        if (! LfirmaValida) {
+        if (!LfirmaValida) {
             LResul = true;
         }
     }
     return LResul;
 }
 
-
-function AjaxRequest() {}
-
-AjaxRequest.prototype.onSuccess = function () {
-    
-}
-
-AjaxRequest.prototype.onError = function () {
-    
-}
-
-
 function procesarJSON(data, requerimiento, procesarResultado) {
     var encodedData = JSON.stringify(data);
     console.debug("Autentia request:", data);
 
     try {
-        var ajaxResult = jQuery.ajax ({
-            headers: { 'Content-type':'text/plain; charset=ISO8859_1'},
+        var ajaxResult = jQuery.ajax({
+            headers: { 'Content-type': 'text/plain; charset=ISO8859_1' },
             type: 'POST',
-            converters: {"* text": window.String},
             url: 'https://plugin.autentia.mb:7777/' + requerimiento + '/' + data.token,
-            success: function() {},
-            error: function() {
+            success: function (encodedResp) {
+                var resp = JSON.parse(encodedResp);
+                console.debug("Autentia response:", resp);
+                if (exitoAutentia(resp)) {
+
+                    if (FirmaInvalidaMB(resp, encodedResp)) {
+                        resp = {
+                            ParamsGet: {
+                                ercText: 'Firma de proceso seguro invalido'
+                            }
+                        }
+                    }
+                }
+
+                if (errorFatalAutentia(resp)) {
+                    console.error(resp.ercText);
+                }
+
+                procesarResultado(resp);
+            },
+            error: function () {
                 procesarResultado({
-                ParamsGet: {
-                    ercText: 'Error de comunicacion con la componente Autentia.'
+                    ParamsGet: {
+                        ercText: 'Error de comunicacion con la componente Autentia.'
                     }
                 });
             },
-            complete: function(xhr, textStatus) {
-                if (textStatus = "success") {
-                    var encodedResp = xhr.responseText;
-                    var resp = JSON.parse(encodedResp);
-                    console.debug("Autentia response:", resp);
-                    if (exitoAutentia(resp)) {
-                        if (FirmaInvalidaMB(resp, encodedResp)) {
-                            resp = {
-                                ParamsGet: {
-                                    ercText: 'Firma de proceso seguro invalido'
-                                    }
-                                }
-                        }
-                    }else{
-                        resp = {
-                                ParamsGet: {
-                                    ercText: glosaAutentia(resp)
-                                    }
-                                }
-                    }
-
-                    if (errorFatalAutentia(resp)) {
-                        console.error(resp.ercText);
-                    }
-
-                    procesarResultado(resp);
-                }
-            },
+            complete: function () { },
             dataType: 'text',
             data: encodedData
         });
 
         console.log('AjaxResult', ajaxResult);
         if (ajaxResult.readyState !== 1) {
-            procesarResultado({ParamsGet: {erc: -1, ercText: 'AjaxError: ' + ajaxResult.statusText}});
+            procesarResultado({ ParamsGet: { erc: -1, ercText: 'AjaxError: ' + ajaxResult.statusText } });
         }
-    } catch (e){
+    } catch (e) {
         console.log("ERROR", e);
-        procesarResultado({ParamsGet: {erc: -1, ercText: 'ERROR: ' + e.message}});
+        procesarResultado({ ParamsGet: { erc: -1, ercText: 'ERROR: ' + e.message } });
     }
 }
 
-var transaccion={};
-var objPaquete=[];
-var prmSet=[];
-var token='';
+var transaccion = {};
+var objPaquete = [];
+var prmSet = [];
+var token = '';
 
 function mensajeBloqueo(mensaje, ruedita) {
     var mensajeHtml = '<h5 style="font-family: Arial;">&nbsp;&nbsp;';
     var urigif = location.href.replace(/[^/]+$/, "img/ruedita.gif");
     if (ruedita === true) {
-            mensajeHtml += '<img style="vertical-align: middle" src="' + urigif + '" />&nbsp;&nbsp;&nbsp;';
+        mensajeHtml += '<img style="vertical-align: middle" src="' + urigif + '" />&nbsp;&nbsp;&nbsp;';
     }
     mensajeHtml += mensaje + '&nbsp;&nbsp;</h5>';
 
@@ -301,8 +280,7 @@ function mensajeBloqueo(mensaje, ruedita) {
     }
 }
 
-function plgAutentiaJS()
-{
+function plgAutentiaJS() {
     console.debug('Plugin Loaded!');
 };
 
@@ -312,25 +290,25 @@ function valueOrDefault(valueFunction, defaultValue) {
         if (value !== undefined)
             return value;
     }
-    catch(e) {}
+    catch (e) { }
     return defaultValue;
 }
 
 function glosaAutentia(respuesta) {
-   return decodeURIComponent(escape((
-       respuesta.ParamsGet.ErcText ||
-       respuesta.ParamsGet.ercText ||
-       respuesta.ParamsGet.ErcDesc ||
-       respuesta.ParamsGet.ercDesc
-   )));
+    return decodeURIComponent(escape((
+        respuesta.ParamsGet.ErcText ||
+        respuesta.ParamsGet.ercText ||
+        respuesta.ParamsGet.ErcDesc ||
+        respuesta.ParamsGet.ercDesc
+    )));
 }
 
 function exitoAutentia(respuesta) {
-    return parseInt(valueOrDefault(function() {return respuesta.ParamsGet.erc;})) === 0;
+    return parseInt(valueOrDefault(function () { return respuesta.ParamsGet.erc; })) === 0;
 }
 
 function errorFatalAutentia(respuesta) {
-    return valueOrDefault(function() {return respuesta.error;}, "") != "";
+    return valueOrDefault(function () { return respuesta.error; }, "") != "";
 }
 
 /* ProcesoFirmaPDF2
@@ -357,12 +335,12 @@ var ProcesoFirmaPDF2 = function (urlDocumentos, selectorCertificado, notificarFi
     this.lastToken = "";
 }
 
-ProcesoFirmaPDF2.prototype.getToken = function() {
+ProcesoFirmaPDF2.prototype.getToken = function () {
     this.lastToken = Math.random().toString();
     return this.lastToken;
 }
 
-ProcesoFirmaPDF2.prototype.procesarListadoCertificados = function(resultado) {
+ProcesoFirmaPDF2.prototype.procesarListadoCertificados = function (resultado) {
     if (exitoAutentia(resultado)) {
         this.selectorCertificado(JSON.parse(resultado.ParamsGet.certificates), this.procesarSeleccionCertificado.bind(this));
     }
@@ -373,7 +351,7 @@ ProcesoFirmaPDF2.prototype.procesarListadoCertificados = function(resultado) {
     }
 }
 
-ProcesoFirmaPDF2.prototype.procesarSeleccionCertificado = function(resultado) {
+ProcesoFirmaPDF2.prototype.procesarSeleccionCertificado = function (resultado) {
     if (exitoAutentia(resultado)) {
         this.certificadoSeleccionado = resultado.ParamsGet;
         this.solicitarFirmaDocumento();
@@ -382,16 +360,16 @@ ProcesoFirmaPDF2.prototype.procesarSeleccionCertificado = function(resultado) {
         // el certificado no fue seleccionado
         jQuery.unblockUI();
         this.notificarFinProceso(false, resultado);
-   }
+    }
 }
 
-ProcesoFirmaPDF2.prototype.solicitarFirmaDocumento = function() {
+ProcesoFirmaPDF2.prototype.solicitarFirmaDocumento = function () {
     if (this.certificadoSeleccionado === null) {
         // todavia no tenemos seleccionado un certificado
         jQuery.blockUI(mensajeBloqueo("Seleccionando el certificado del firmante...", true));
 
         var transaccion = {
-            paquete: [{comando: "CryptoAPI.ListCerts"}],
+            paquete: [{ comando: "CryptoAPI.ListCerts" }],
             token: this.getToken()
         }
 
@@ -424,11 +402,11 @@ ProcesoFirmaPDF2.prototype.solicitarFirmaDocumento = function() {
     }
 }
 
-ProcesoFirmaPDF2.prototype.procesarResultadoFirma = function(started, resultado) {
+ProcesoFirmaPDF2.prototype.procesarResultadoFirma = function (started, resultado) {
     this.resultados.push(resultado);
     this.documentoPorFirmar += 1;
     var ended = new Date().getTime();
-    console.log("CryptoAPI.SignDocument: " , (ended - started) + " ms");
+    console.log("CryptoAPI.SignDocument: ", (ended - started) + " ms");
     if (exitoAutentia(resultado)) {
         // la firma del documento termino con exito, seguimos firmando
         if (this.ctxtId == "") {
@@ -461,12 +439,12 @@ var ProcesoFirmaPDF = function (codDocumento, rutFirmante, nombreFirmante, apell
     this.lastToken = "";
 }
 
-ProcesoFirmaPDF.prototype.getToken = function() {
+ProcesoFirmaPDF.prototype.getToken = function () {
     this.lastToken = Math.random().toString();
     return this.lastToken;
 }
 
-ProcesoFirmaPDF.prototype.solicitarFirmaDocumento = function() {
+ProcesoFirmaPDF.prototype.solicitarFirmaDocumento = function () {
     var nroDocumentos = this.codDocumento.length;
     if (this.documentoPorFirmar < nroDocumentos) {
         // tenemos documentos por firmar
@@ -493,11 +471,11 @@ ProcesoFirmaPDF.prototype.solicitarFirmaDocumento = function() {
     }
 }
 
-ProcesoFirmaPDF.prototype.procesarResultadoFirma = function(started, resultado) {
+ProcesoFirmaPDF.prototype.procesarResultadoFirma = function (started, resultado) {
     this.resultados.push(resultado);
     this.documentoPorFirmar += 1;
     var ended = new Date().getTime();
-    console.log("pdfXSign: " , (ended - started) + " ms");
+    console.log("pdfXSign: ", (ended - started) + " ms");
     if (exitoAutentia(resultado)) {
         // la firma del documento termino con exito, seguimos firmando
         if (this.ctxtId == "") {
@@ -512,18 +490,18 @@ ProcesoFirmaPDF.prototype.procesarResultadoFirma = function(started, resultado) 
     }
 }
 
-plgAutentiaJS.prototype.firmarDocumentos = function(urlDocumentos, selectorCertificado, notificarFinProceso) {
+plgAutentiaJS.prototype.firmarDocumentos = function (urlDocumentos, selectorCertificado, notificarFinProceso) {
     var procesoFirma = new ProcesoFirmaPDF2(urlDocumentos, selectorCertificado, notificarFinProceso);
     procesoFirma.solicitarFirmaDocumento();
 };
 
-plgAutentiaJS.prototype.pdfXSign = function(codDocumento, rutFirmante, nombreFirmante, ApellidosFirmante, Institucion, token, excResp) {
+plgAutentiaJS.prototype.pdfXSign = function (codDocumento, rutFirmante, nombreFirmante, ApellidosFirmante, Institucion, token, excResp) {
     var procesoFirma = new ProcesoFirmaPDF(codDocumento, rutFirmante, nombreFirmante, ApellidosFirmante, Institucion, excResp);
     procesoFirma.solicitarFirmaDocumento();
 };
 
-plgAutentiaJS.prototype.IniciarSesion = function(rut, token, excResp) {
-    objPaquete.push({comando:"IniciarSesion",param:rut});
+plgAutentiaJS.prototype.IniciarSesion = function (rut, token, excResp) {
+    objPaquete.push({ comando: "IniciarSesion", param: rut });
     var response;
     transaccion.paquete = objPaquete;
     transaccion.token = token;
@@ -533,7 +511,7 @@ plgAutentiaJS.prototype.IniciarSesion = function(rut, token, excResp) {
     en una opcion que se despliega en la barra de direccion con forma de escudo. En Chrome, solo
     muestra un warning en la consola del browser.
     */
-    response = procesarJSON(transaccion, 'initSesion', function(response) {
+    response = procesarJSON(transaccion, 'initSesion', function (response) {
         transaccion = {};
         objPaquete = [];
         prmSet = [];
@@ -542,8 +520,8 @@ plgAutentiaJS.prototype.IniciarSesion = function(rut, token, excResp) {
     });
 };
 
-plgAutentiaJS.prototype.IniciarSesionLogin = function(rut, token, excResp) {
-    objPaquete.push({comando:"IniciarSesionLogin",param:rut});
+plgAutentiaJS.prototype.IniciarSesionLogin = function (rut, token, excResp) {
+    objPaquete.push({ comando: "IniciarSesionLogin", param: rut });
     var response;
     transaccion.paquete = objPaquete;
     transaccion.token = token;
@@ -553,7 +531,7 @@ plgAutentiaJS.prototype.IniciarSesionLogin = function(rut, token, excResp) {
     en una opcion que se despliega en la barra de direccion con forma de escudo. En Chrome, solo
     muestra un warning en la consola del browser.
         */
-    response = procesarJSON(transaccion, 'initSesion', function(response) {
+    response = procesarJSON(transaccion, 'initSesion', function (response) {
         transaccion = {};
         objPaquete = [];
         prmSet = [];
@@ -562,7 +540,7 @@ plgAutentiaJS.prototype.IniciarSesionLogin = function(rut, token, excResp) {
     });
 }
 
-plgAutentiaJS.prototype.Transaccion2 = function(trxName, entrada, salida, hookAutentia, token, excResp) {
+plgAutentiaJS.prototype.Transaccion2 = function (trxName, entrada, salida, hookAutentia, token, excResp) {
     jQuery.blockUI(mensajeBloqueo('Ejecutando transaccion autentia.'));
 
     var prmSet = [];
@@ -573,7 +551,7 @@ plgAutentiaJS.prototype.Transaccion2 = function(trxName, entrada, salida, hookAu
     for (var x in entrada) {
         ParamInit.push(x);
         i += 1;
-        prmSet.push({idx: i, valor: entrada[x]});
+        prmSet.push({ idx: i, valor: entrada[x] });
     }
 
     for (var x in salida) {
@@ -582,14 +560,14 @@ plgAutentiaJS.prototype.Transaccion2 = function(trxName, entrada, salida, hookAu
         }
     }
 
-    objPaquete.push({comando: "ParamsInit", param: ParamInit.join(",")});
+    objPaquete.push({ comando: "ParamsInit", param: ParamInit.join(",") });
     if (prmSet.length) {
-        objPaquete.push({comando: "ParamsSet", param: prmSet});
+        objPaquete.push({ comando: "ParamsSet", param: prmSet });
     }
-    objPaquete.push({comando: "Transaccion", param: trxName});
+    objPaquete.push({ comando: "Transaccion", param: trxName });
 
-    for(var x in salida) {
-        objPaquete.push({comando: "ParamsGet", param: _indexOf(ParamInit, salida[x]) + 1, paramName: salida[x]});
+    for (var x in salida) {
+        objPaquete.push({ comando: "ParamsGet", param: _indexOf(ParamInit, salida[x]) + 1, paramName: salida[x] });
     }
 
     var response, transaccion = {};
@@ -603,8 +581,7 @@ plgAutentiaJS.prototype.Transaccion2 = function(trxName, entrada, salida, hookAu
     en una opcion que se despliega en la barra de direccion con forma de escudo. En Chrome, solo
     muestra un warning en la consola del browser.
     */
-    response = procesarJSON(transaccion, 'json-handler', function(response)
-    {
+    response = procesarJSON(transaccion, 'json-handler', function (response) {
         transaccion = {};
         objPaquete = [];
         prmSet = [];
@@ -614,8 +591,8 @@ plgAutentiaJS.prototype.Transaccion2 = function(trxName, entrada, salida, hookAu
 
 }
 
-plgAutentiaJS.prototype.CerrarSesion = function(token) {
-    objPaquete.push({comando:"CerrarSesion", param:""});
+plgAutentiaJS.prototype.CerrarSesion = function (token) {
+    objPaquete.push({ comando: "CerrarSesion", param: "" });
     var response;
     transaccion.paquete = objPaquete;
     transaccion.token = token;
@@ -625,8 +602,7 @@ plgAutentiaJS.prototype.CerrarSesion = function(token) {
     en una opcion que se despliega en la barra de direccion con forma de escudo. En Chrome, solo
     muestra un warning en la consola del browser.
     */
-    response = procesarJSON(transaccion, 'closeSesion', function(response)
-    {
+    response = procesarJSON(transaccion, 'closeSesion', function (response) {
         transaccion = {};
         objPaquete = [];
         prmSet = [];

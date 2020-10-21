@@ -1,4 +1,5 @@
 import React from "react";
+// import TrxCentral from "../components/TrxCentral";
 
 class FormVerification extends React.Component {
   state = {
@@ -15,7 +16,8 @@ class FormVerification extends React.Component {
     this.setState({
       form: {
         ...this.state.form,
-        selectedOption: e.target.value
+        selectedOption: e.target.value,
+        dni: "",
       }
     })
   }
@@ -32,17 +34,16 @@ class FormVerification extends React.Component {
   handleForm = (e) => {
     e.preventDefault();
     const { selectedOption } = this.state.form;
-    
-    if (selectedOption.length > 0 ) {
-      console.log("entra")
-    } else {
-      alert("Falta type de verificacion");
-    }
+
+    console.log(this.state.form);
+
+    !this.state.options.includes(selectedOption) && console.log("Selected option dont include");
+    //TrxCentral({data: this.state.form, options: this.state.options});
+    alert("INCOMING!")
   };
 
   render() {
     const { selectedOption } = this.state.form;
-    console.log(selectedOption);
     return (
       <form className="options-container" onSubmit={this.handleForm}>
         <div className="column is-4">
@@ -88,6 +89,5 @@ const InputDni = (props) => {
     </div>
   )
 }
-    
 
 export default FormVerification;
